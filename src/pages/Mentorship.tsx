@@ -48,7 +48,11 @@ const mentors = [
   }
 ];
 
-const Mentorship = () => {
+type MentorshipProps = {
+  isPortalMode?: boolean;
+};
+
+const Mentorship = ({ isPortalMode = false }: MentorshipProps) => {
   const [selectedExpertise, setSelectedExpertise] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
@@ -66,10 +70,10 @@ const Mentorship = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-page">
-      <Navigation />
+    <div className={isPortalMode ? "" : "min-h-screen bg-gradient-page"}>
+      {!isPortalMode && <Navigation />}
       
-      <main className="container mx-auto px-4 pt-24 pb-16">
+      <main className={`container mx-auto px-4 ${isPortalMode ? 'pt-0' : 'pt-24'} pb-16`}>
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-text bg-clip-text text-transparent">
