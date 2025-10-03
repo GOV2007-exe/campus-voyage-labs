@@ -3,9 +3,9 @@ import Navigation from '../components/Navigation';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Building2, Users, Sparkles, ArrowRight, Bot, GraduationCap, MessageCircle } from "lucide-react";
+import { Brain, Building2, Users, Sparkles, ArrowRight } from "lucide-react";
 import SynqAI from '../components/SynqAI';
-import CollegeExplorer from '../components/CollegeExplorer';
+import CampusSynqTabs from '../components/CampusSynqTabs';
 import Mentorship from './Mentorship';
 
 type Portal = 'ai' | 'campus' | 'mentorship' | null;
@@ -79,7 +79,7 @@ const Index = () => {
           >
             ← Back to Home
           </Button>
-          <CollegeExplorer />
+          <CampusSynqTabs />
         </div>
       </div>
     );

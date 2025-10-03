@@ -30,12 +30,7 @@ const Navigation = () => {
   }, [userXP]);
 
   const navItems = [
-    { icon: BookOpen, label: "Explore Colleges", to: "/#colleges" },
-    { icon: Trophy, label: "Scholarships", to: "/scholarships" },
-    { icon: Users, label: "Mentorship", to: "/mentorship" },
-    { icon: Calendar, label: "Events", to: "/events" },
-    { icon: MessageSquare, label: "Community", to: "/community" },
-    { icon: FileText, label: "Blogs", to: "/blogs" },
+    { icon: BookOpen, label: "Home", to: "/" },
   ];
 
   const isActiveRoute = (path: string) => {
@@ -53,8 +48,8 @@ const Navigation = () => {
               <Target className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="font-bold text-xl text-foreground">CampusQuest</h1>
-              <p className="text-xs text-muted-foreground">Level Up Your Future</p>
+              <h1 className="font-bold text-xl text-foreground">Synq</h1>
+              <p className="text-xs text-muted-foreground">Stay in Sync with Your Future</p>
             </div>
           </Link>
 

@@ -5,9 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Star, MapPin, Clock, MessageCircle, Video, Users, Search } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { useToast } from "@/hooks/use-toast";
+import CommunitySection from "@/components/CommunitySection";
 
 const mentors = [
   {
@@ -74,6 +76,13 @@ const Mentorship = ({ isPortalMode = false }: MentorshipProps) => {
       {!isPortalMode && <Navigation />}
       
       <main className={`container mx-auto px-4 ${isPortalMode ? 'pt-0' : 'pt-24'} pb-16`}>
+        <Tabs defaultValue="mentors" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsTrigger value="mentors">Find Mentors</TabsTrigger>
+            <TabsTrigger value="community">Community</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="mentors">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-text bg-clip-text text-transparent">
@@ -201,6 +210,12 @@ const Mentorship = ({ isPortalMode = false }: MentorshipProps) => {
             <p className="text-muted-foreground">Average Rating</p>
           </Card>
         </div>
+          </TabsContent>
+
+          <TabsContent value="community">
+            <CommunitySection />
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );

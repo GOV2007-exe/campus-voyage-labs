@@ -5,13 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Brain, Send, FileText, Calculator, School, 
   Sparkles, BookOpen, TrendingUp, Download, 
-  MessageCircle, Mic, Paperclip, BarChart 
+  MessageCircle, Mic, Paperclip, BarChart, Trophy, Users 
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useXP } from "@/hooks/useXP";
+import CommunitySection from './CommunitySection';
 
 type Message = {
   id: number;
@@ -35,9 +37,10 @@ const SynqAI = () => {
   const [activeFeature, setActiveFeature] = useState<Feature>('chat');
   const [essayText, setEssayText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [activeTab, setActiveTab] = useState('ai');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const { addXP } = useXP();
+  const { addXP, userXP, userLevel } = useXP();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -76,14 +79,28 @@ const SynqAI = () => {
   const generateAIResponse = (query: string) => {
     const lowerQuery = query.toLowerCase();
     
-    if (lowerQuery.includes('essay')) {
-      return "I'd be happy to help with your essay! Please use the 'Essay Review' feature to upload or paste your essay. I'll provide detailed feedback on structure, content, grammar, and overall impact.";
-    } else if (lowerQuery.includes('college') || lowerQuery.includes('university')) {
-      return "For college recommendations, try the 'College Matcher' feature! I'll ask about your preferences, academic profile, and goals to suggest the best-fit universities for you.";
-    } else if (lowerQuery.includes('chance') || lowerQuery.includes('admission')) {
-      return "Want to know your admission chances? Use the 'Chance Calculator' feature where you can input your GPA, test scores, and extracurriculars. I'll analyze your profile and provide realistic estimates!";
+    if (lowerQuery.includes('essay') || lowerQuery.includes('write')) {
+      return "I'd be happy to help with your essay! Please use the 'Essay Review' feature to upload or paste your essay. I'll provide detailed feedback on:\n\n✓ Structure and organization\n✓ Content quality and depth\n✓ Grammar and language\n✓ Overall impact and uniqueness\n\nClick the 'Essay Review' button to get started!";
+    } else if (lowerQuery.includes('college') || lowerQuery.includes('university') || lowerQuery.includes('school')) {
+      return "Looking for the perfect college? I can help! Here's what I can do:\n\n🎯 **College Matcher**: Based on your profile, I'll recommend universities that match your academic goals, location preferences, and budget.\n\n📊 I consider factors like:\n• Your intended major\n• GPA and test scores\n• Location preferences\n• Budget and financial aid needs\n• Campus culture preferences\n\nUse the 'College Matcher' feature to find your perfect fit!";
+    } else if (lowerQuery.includes('chance') || lowerQuery.includes('admission') || lowerQuery.includes('accept')) {
+      return "Want to know your admission chances? I can calculate that for you!\n\n📈 **Chance Calculator** analyzes:\n• Your GPA (weighted & unweighted)\n• Standardized test scores (SAT/ACT)\n• AP/IB courses taken\n• Extracurricular activities\n• Leadership roles\n• Awards and honors\n\nI'll provide realistic probability estimates for different universities. Click 'Chance Calculator' to begin!";
+    } else if (lowerQuery.includes('scholarship') || lowerQuery.includes('financial')) {
+      return "Scholarships can significantly reduce your college costs! Here's how I can help:\n\n💰 I can:\n• Identify scholarships matching your profile\n• Review your scholarship essays\n• Suggest strategies to strengthen applications\n• Help track deadlines\n\nAsk me specific questions about scholarships, or use the Campus Synq portal to browse available opportunities!";
+    } else if (lowerQuery.includes('deadline') || lowerQuery.includes('timeline')) {
+      return "Application timelines are crucial! Here's a general overview:\n\n📅 **Key Deadlines:**\n\n**Early Action/Decision**: November 1-15\n**Regular Decision**: January 1-15\n**Scholarship Applications**: Varies (often December-February)\n**Financial Aid (FAFSA)**: October 1 onwards\n\n⏰ Pro tip: Start your applications at least 2 months before deadlines to allow time for revisions and recommendations.\n\nWant help creating a personalized timeline? Just ask!";
+    } else if (lowerQuery.includes('gpa') || lowerQuery.includes('grade')) {
+      return "GPA is important, but it's not everything! Here's what you should know:\n\n📚 **GPA Considerations:**\n\n• Most competitive colleges look at weighted GPA (includes AP/Honors courses)\n• Course rigor matters as much as grades\n• An upward grade trend shows growth\n• A 3.8+ weighted GPA is competitive for top schools\n\nIf your GPA isn't perfect, focus on:\n✓ Strong test scores\n✓ Compelling essays\n✓ Meaningful extracurriculars\n✓ Outstanding recommendations\n\nWant to calculate your chances with your current GPA? Use the Chance Calculator!";
+    } else if (lowerQuery.includes('extracurricular') || lowerQuery.includes('activities')) {
+      return "Extracurriculars show who you are beyond grades! Here's what colleges look for:\n\n🎯 **Quality over Quantity:**\n\n✓ **Leadership roles**: Club president, team captain, etc.\n✓ **Depth & commitment**: 2-4 years in activities\n✓ **Impact**: Measurable achievements or change you created\n✓ **Passion**: Activities aligned with your interests/major\n\n**Examples of Strong ECs:**\n• Founded a community service project\n• Led a school club to win competitions\n• Published research or creative work\n• Varsity sports with leadership role\n\nWant help highlighting your activities in essays? I can help with that!";
+    } else if (lowerQuery.includes('recommend') || lowerQuery.includes('letter')) {
+      return "Recommendation letters can make or break your application! Here's my advice:\n\n📧 **Getting Great Letters:**\n\n**Who to ask:**\n✓ Teachers who know you well (junior/senior year)\n✓ Teachers in subjects related to your intended major\n✓ Counselor who can speak to your overall character\n✓ Optional: Employer, coach, or mentor for supplemental letters\n\n**When to ask:**\n• At least 2 months before deadlines\n• Ideally in spring of junior year\n\n**What to provide:**\n• Resume/activity list\n• Draft essay or personal statement\n• Specific examples of your work/achievements\n• Clear deadline and submission instructions\n\nNeed help preparing your request materials? Just ask!";
+    } else if (lowerQuery.includes('sat') || lowerQuery.includes('act') || lowerQuery.includes('test')) {
+      return "Test scores can strengthen your application! Here's what you need to know:\n\n📝 **SAT vs ACT:**\n\n**SAT** (out of 1600):\n• More emphasis on reasoning\n• 1400+ is competitive for top schools\n• 1500+ for Ivy League\n\n**ACT** (out of 36):\n• More straightforward questions\n• 32+ is competitive for top schools\n• 34+ for Ivy League\n\n**Test-Optional Policies:**\nMany schools are now test-optional! Submit scores if they strengthen your application, otherwise focus on other areas.\n\n**Super scoring:**\nMost colleges take your best section scores across multiple test dates!\n\nWant to calculate your chances with your test scores? Try the Chance Calculator!";
+    } else if (lowerQuery.includes('interview')) {
+      return "College interviews are your chance to shine in person! Here's how to prepare:\n\n🎤 **Interview Tips:**\n\n**Before:**\n• Research the college thoroughly\n• Prepare 2-3 questions to ask\n• Review your application and essays\n• Practice with friends or family\n\n**Common Questions:**\n• Why are you interested in this college?\n• Tell me about yourself\n• What's your greatest achievement?\n• What would you contribute to campus?\n• Where do you see yourself in 10 years?\n\n**During:**\n✓ Be authentic and genuine\n✓ Show enthusiasm for the school\n✓ Give specific examples\n✓ Ask thoughtful questions\n✓ Make eye contact and smile\n\n**After:**\n• Send a thank-you email within 24 hours\n\nWant to practice answering specific questions? I can help!";
     } else {
-      return "That's a great question! I'm here to help with college admissions. You can ask me about essay writing tips, college selection strategies, application timelines, or use my specialized features for detailed analysis.";
+      return "I'm Synq AI, your personal admissions assistant! I'm here to help with all aspects of college applications. Here's what I can do:\n\n🤖 **My Capabilities:**\n\n📝 **Essay Review**: Get detailed feedback on your personal statement and supplemental essays\n\n📊 **Chance Calculator**: Calculate your admission probability based on your academic profile\n\n🎯 **College Matcher**: Find universities that match your preferences and qualifications\n\n💬 **General Advice**: Ask me anything about:\n• Application strategies\n• Essay writing tips\n• Extracurricular activities\n• Recommendation letters\n• Financial aid and scholarships\n• Interview preparation\n• Timeline and deadlines\n\nHow can I help you today? Feel free to ask specific questions or use one of my specialized features!";
     }
   };
 
@@ -156,7 +173,24 @@ Your essay shows great potential! Focus on adding more vivid details and ensurin
   ];
 
   return (
-    <div className="grid lg:grid-cols-3 gap-6">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+      <TabsList className="grid w-full grid-cols-3 mb-8">
+        <TabsTrigger value="ai" className="flex items-center gap-2">
+          <Brain className="w-4 h-4" />
+          <span className="hidden sm:inline">AI Assistant</span>
+        </TabsTrigger>
+        <TabsTrigger value="level" className="flex items-center gap-2">
+          <Trophy className="w-4 h-4" />
+          <span className="hidden sm:inline">Level {userLevel}</span>
+        </TabsTrigger>
+        <TabsTrigger value="community" className="flex items-center gap-2">
+          <Users className="w-4 h-4" />
+          <span className="hidden sm:inline">Community</span>
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="ai">
+        <div className="grid lg:grid-cols-3 gap-6">
       {/* Main Chat Area */}
       <div className="lg:col-span-2 space-y-6">
         {/* Header */}
@@ -476,7 +510,131 @@ Your essay shows great potential! Focus on adding more vivid details and ensurin
           </CardContent>
         </Card>
       </div>
-    </div>
+        </div>
+      </TabsContent>
+
+      <TabsContent value="level">
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Progress Card */}
+          <div className="lg:col-span-2 space-y-6">
+            <Card className="glass-card border-primary/20">
+              <CardHeader>
+                <CardTitle className="text-2xl flex items-center gap-3">
+                  <Trophy className="w-8 h-8 text-primary" />
+                  Level {userLevel} - College Explorer
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <span className="text-sm font-medium">Progress to Level {userLevel + 1}</span>
+                    <span className="text-sm text-primary">{userXP % 500} / 500 XP</span>
+                  </div>
+                  <Progress value={(userXP % 500) / 5} className="h-3 progress-glow" />
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div className="text-center p-4 bg-gradient-card rounded-lg">
+                    <p className="text-3xl font-bold text-primary">{userXP}</p>
+                    <p className="text-sm text-muted-foreground">Total XP</p>
+                  </div>
+                  <div className="text-center p-4 bg-gradient-card rounded-lg">
+                    <p className="text-3xl font-bold text-secondary">{userLevel}</p>
+                    <p className="text-sm text-muted-foreground">Current Level</p>
+                  </div>
+                  <div className="text-center p-4 bg-gradient-card rounded-lg">
+                    <p className="text-3xl font-bold text-accent">15</p>
+                    <p className="text-sm text-muted-foreground">Achievements</p>
+                  </div>
+                </div>
+
+                {/* Recent Activities */}
+                <div>
+                  <h4 className="font-semibold mb-4">Recent XP Gains</h4>
+                  <div className="space-y-3">
+                    {[
+                      { action: 'Used Synq AI', xp: 10, time: '2 hours ago' },
+                      { action: 'Completed Essay Review', xp: 25, time: '1 day ago' },
+                      { action: 'Used College Matcher', xp: 15, time: '2 days ago' },
+                      { action: 'Used Chance Calculator', xp: 20, time: '3 days ago' },
+                    ].map((activity, i) => (
+                      <div key={i} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                        <div>
+                          <p className="font-medium text-sm">{activity.action}</p>
+                          <p className="text-xs text-muted-foreground">{activity.time}</p>
+                        </div>
+                        <Badge className="bg-gradient-primary text-white">
+                          +{activity.xp} XP
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Achievements Sidebar */}
+          <div className="space-y-6">
+            <Card className="glass-card">
+              <CardHeader>
+                <CardTitle className="text-lg">Achievements</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {[
+                  { icon: '🎯', name: 'First Steps', desc: 'Created your profile', unlocked: true },
+                  { icon: '✍️', name: 'Essay Master', desc: 'Reviewed 5 essays', unlocked: true },
+                  { icon: '🎓', name: 'Scholar', desc: 'Applied to 10 colleges', unlocked: false },
+                  { icon: '💰', name: 'Fund Hunter', desc: 'Applied to 5 scholarships', unlocked: false },
+                ].map((achievement, i) => (
+                  <div key={i} className={`p-3 rounded-lg ${achievement.unlocked ? 'bg-gradient-primary/10' : 'bg-muted opacity-50'}`}>
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{achievement.icon}</span>
+                      <div className="flex-1">
+                        <p className="font-medium text-sm">{achievement.name}</p>
+                        <p className="text-xs text-muted-foreground">{achievement.desc}</p>
+                      </div>
+                      {achievement.unlocked && (
+                        <Badge variant="secondary" className="text-xs">✓</Badge>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card className="glass-card border-primary/20">
+              <CardHeader>
+                <CardTitle className="text-lg">Level Rewards</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  Keep earning XP to unlock premium features and rewards!
+                </p>
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary">Level 10</Badge>
+                    <span className="text-muted-foreground">Premium AI Features</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary">Level 15</Badge>
+                    <span className="text-muted-foreground">Priority Mentor Access</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary">Level 20</Badge>
+                    <span className="text-muted-foreground">Exclusive Scholarships</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </TabsContent>
+
+      <TabsContent value="community">
+        <CommunitySection />
+      </TabsContent>
+    </Tabs>
   );
 };
 
