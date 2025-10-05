@@ -56,6 +56,30 @@ export type Database = {
           },
         ]
       }
+      feature_usage: {
+        Row: {
+          feature_name: string
+          id: string
+          last_used_at: string | null
+          usage_count: number | null
+          user_id: string
+        }
+        Insert: {
+          feature_name: string
+          id?: string
+          last_used_at?: string | null
+          usage_count?: number | null
+          user_id: string
+        }
+        Update: {
+          feature_name?: string
+          id?: string
+          last_used_at?: string | null
+          usage_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       forum_posts: {
         Row: {
           content: string
@@ -141,34 +165,43 @@ export type Database = {
       }
       marketplace_listings: {
         Row: {
+          availability: string | null
           category: string
           created_at: string | null
           description: string
           expires_at: string | null
           id: string
           listing_type: string
+          location: string | null
+          skill_level: string | null
           status: string | null
           title: string
           user_id: string
         }
         Insert: {
+          availability?: string | null
           category: string
           created_at?: string | null
           description: string
           expires_at?: string | null
           id?: string
           listing_type: string
+          location?: string | null
+          skill_level?: string | null
           status?: string | null
           title: string
           user_id: string
         }
         Update: {
+          availability?: string | null
           category?: string
           created_at?: string | null
           description?: string
           expires_at?: string | null
           id?: string
           listing_type?: string
+          location?: string | null
+          skill_level?: string | null
           status?: string | null
           title?: string
           user_id?: string
@@ -280,6 +313,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_activities: {
+        Row: {
+          activity_description: string
+          activity_type: string
+          created_at: string | null
+          id: string
+          user_id: string
+          xp_earned: number | null
+        }
+        Insert: {
+          activity_description: string
+          activity_type: string
+          created_at?: string | null
+          id?: string
+          user_id: string
+          xp_earned?: number | null
+        }
+        Update: {
+          activity_description?: string
+          activity_type?: string
+          created_at?: string | null
+          id?: string
+          user_id?: string
+          xp_earned?: number | null
+        }
+        Relationships: []
+      }
       user_badges: {
         Row: {
           badge_name: string
@@ -320,6 +380,8 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: string
+          proficiency_rating: number | null
+          skill_level: string | null
           skill_name: string
           skill_type: string
           user_id: string
@@ -328,6 +390,8 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          proficiency_rating?: number | null
+          skill_level?: string | null
           skill_name: string
           skill_type: string
           user_id: string
@@ -336,6 +400,8 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          proficiency_rating?: number | null
+          skill_level?: string | null
           skill_name?: string
           skill_type?: string
           user_id?: string

@@ -189,4 +189,31 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--primary-glow));
   }
+  
+  /* Gamification Text Colors */
+  .text-gamification-xp {
+    color: hsl(var(--xp));
+  }
+  
+  .bg-gamification-xp {
+    background-color: hsl(var(--xp));
+  }
+}
+
+@layer utilities {
+  /* Animation for feature discovery popup */
+  .animate-slide-in-right {
+    animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
 }

@@ -7,6 +7,7 @@ import { Brain, Building2, Users, Sparkles, ArrowRight } from "lucide-react";
 import SynqAI from '../components/SynqAI';
 import CampusSynqTabs from '../components/CampusSynqTabs';
 import Mentorship from './Mentorship';
+import { FeatureDiscoveryPopup } from '@/components/FeatureDiscoveryPopup';
 
 type Portal = 'ai' | 'campus' | 'mentorship' | null;
 
@@ -108,6 +109,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
+      <FeatureDiscoveryPopup />
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
