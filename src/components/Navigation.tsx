@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Menu, X, Trophy, Target, User, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useXP } from "@/hooks/useXP";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,16 +13,7 @@ const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
-  
-  const [userXP, setUserXP] = useState(() => {
-    const savedXP = localStorage.getItem('campusquest_xp');
-    return savedXP ? parseInt(savedXP) : 0;
-  });
-  
-  const [userLevel, setUserLevel] = useState(() => {
-    const savedLevel = localStorage.getItem('campusquest_level');
-    return savedLevel ? parseInt(savedLevel) : 1;
-  });
+  const { userXP, userLevel } = useXP();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -34,15 +26,6 @@ const Navigation = () => {
 
     return () => subscription.unsubscribe();
   }, []);
-  
-  useEffect(() => {
-    const calculatedLevel = Math.floor(userXP / 500) + 1;
-    if (calculatedLevel !== userLevel) {
-      setUserLevel(calculatedLevel);
-      localStorage.setItem('campusquest_level', calculatedLevel.toString());
-    }
-    localStorage.setItem('campusquest_xp', userXP.toString());
-  }, [userXP]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
