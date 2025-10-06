@@ -143,13 +143,14 @@ const Index = () => {
             <Button 
               size="lg"
               className="bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90 text-white text-lg px-12 py-7 rounded-full hover-lift"
+              onClick={() => document.getElementById('main-features')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
             >
               Get Started <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </div>
 
           {/* Portal Cards */}
-          <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mt-20">
+          <div id="main-features" className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mt-20">
             {portals.map((portal, index) => (
               <Card 
                 key={portal.id}
