@@ -8,12 +8,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Search, User, MessageCircle, Star } from 'lucide-react';
+import { Plus, Search, User, MessageCircle, Star, Zap, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useActivityFeed } from '@/hooks/useActivityFeed';
 import { useFeatureTracking } from '@/hooks/useFeatureTracking';
 import { ActivityFeed } from '@/components/ActivityFeed';
 import { useXP } from '@/hooks/useXP';
+import { MicroChallenges } from '@/components/MicroChallenges';
+import { ExchangeTimer } from '@/components/ExchangeTimer';
+import Navigation from '@/components/Navigation';
 
 const Marketplace = () => {
   const [listings, setListings] = useState<any[]>([]);
@@ -139,18 +142,35 @@ const Marketplace = () => {
   const needListings = filteredListings.filter(l => l.listing_type === 'need');
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-br from-background via-primary/5 to-background">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Peer Exchange Marketplace</h1>
-          <Button onClick={() => setShowForm(!showForm)}>
-            <Plus className="w-4 h-4 mr-2" />
-            New Listing
-          </Button>
-        </div>
+            <h1 className="text-3xl font-bold">Peer Exchange Marketplace</h1>
+
+            <Tabs defaultValue="exchange" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="exchange">Skill Exchange</TabsTrigger>
+                <TabsTrigger value="challenges">
+                  <Zap className="w-4 h-4 mr-2" />
+                  Micro Challenges
+                </TabsTrigger>
+                <TabsTrigger value="timer">
+                  <Clock className="w-4 h-4 mr-2" />
+                  Timer
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="exchange" className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-semibold">Skill Exchange</h2>
+                  <Button onClick={() => setShowForm(!showForm)}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    New Listing
+                  </Button>
+                </div>
 
             {/* Search and Filters */}
             <div className="flex gap-3">
@@ -334,6 +354,18 @@ const Marketplace = () => {
               </Card>
             ))}
           </TabsContent>
+                </Tabs>
+              </TabsContent>
+
+              <TabsContent value="challenges">
+                <MicroChallenges />
+              </TabsContent>
+
+              <TabsContent value="timer">
+                <div className="max-w-2xl mx-auto">
+                  <ExchangeTimer />
+                </div>
+              </TabsContent>
             </Tabs>
           </div>
 

@@ -56,6 +56,60 @@ export type Database = {
           },
         ]
       }
+      exchange_sessions: {
+        Row: {
+          created_at: string | null
+          duration_minutes: number
+          id: string
+          notes: string | null
+          participant_id: string
+          partner_id: string | null
+          session_type: string
+          skill_name: string
+          trust_earned: number | null
+          xp_earned: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          duration_minutes: number
+          id?: string
+          notes?: string | null
+          participant_id: string
+          partner_id?: string | null
+          session_type: string
+          skill_name: string
+          trust_earned?: number | null
+          xp_earned?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          duration_minutes?: number
+          id?: string
+          notes?: string | null
+          participant_id?: string
+          partner_id?: string | null
+          session_type?: string
+          skill_name?: string
+          trust_earned?: number | null
+          xp_earned?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exchange_sessions_participant_id_fkey"
+            columns: ["participant_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "exchange_sessions_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       feature_usage: {
         Row: {
           feature_name: string
@@ -216,6 +270,69 @@ export type Database = {
           },
         ]
       }
+      micro_challenges: {
+        Row: {
+          accepted_by: string | null
+          completed_at: string | null
+          created_at: string | null
+          creator_id: string
+          description: string
+          difficulty: string | null
+          expires_at: string | null
+          id: string
+          skill_required: string
+          status: string | null
+          time_limit_minutes: number
+          title: string
+          xp_reward: number | null
+        }
+        Insert: {
+          accepted_by?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          creator_id: string
+          description: string
+          difficulty?: string | null
+          expires_at?: string | null
+          id?: string
+          skill_required: string
+          status?: string | null
+          time_limit_minutes: number
+          title: string
+          xp_reward?: number | null
+        }
+        Update: {
+          accepted_by?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          creator_id?: string
+          description?: string
+          difficulty?: string | null
+          expires_at?: string | null
+          id?: string
+          skill_required?: string
+          status?: string | null
+          time_limit_minutes?: number
+          title?: string
+          xp_reward?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "micro_challenges_accepted_by_fkey"
+            columns: ["accepted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "micro_challenges_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mindfulness_sessions: {
         Row: {
           completed_at: string | null
@@ -313,6 +430,61 @@ export type Database = {
         }
         Relationships: []
       }
+      skill_vouches: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          decays_at: string | null
+          id: string
+          skill_id: string
+          vouch_strength: number | null
+          vouched_user_id: string
+          voucher_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string | null
+          decays_at?: string | null
+          id?: string
+          skill_id: string
+          vouch_strength?: number | null
+          vouched_user_id: string
+          voucher_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string | null
+          decays_at?: string | null
+          id?: string
+          skill_id?: string
+          vouch_strength?: number | null
+          vouched_user_id?: string
+          voucher_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skill_vouches_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "user_skills"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "skill_vouches_vouched_user_id_fkey"
+            columns: ["vouched_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "skill_vouches_voucher_id_fkey"
+            columns: ["voucher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_activities: {
         Row: {
           activity_description: string
@@ -380,31 +552,40 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: string
+          liquidity_score: number | null
           proficiency_rating: number | null
           skill_level: string | null
           skill_name: string
           skill_type: string
+          trust_points: number | null
           user_id: string
+          vouches_count: number | null
         }
         Insert: {
           created_at?: string | null
           description?: string | null
           id?: string
+          liquidity_score?: number | null
           proficiency_rating?: number | null
           skill_level?: string | null
           skill_name: string
           skill_type: string
+          trust_points?: number | null
           user_id: string
+          vouches_count?: number | null
         }
         Update: {
           created_at?: string | null
           description?: string | null
           id?: string
+          liquidity_score?: number | null
           proficiency_rating?: number | null
           skill_level?: string | null
           skill_name?: string
           skill_type?: string
+          trust_points?: number | null
           user_id?: string
+          vouches_count?: number | null
         }
         Relationships: [
           {
