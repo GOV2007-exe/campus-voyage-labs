@@ -3,14 +3,15 @@ import Navigation from '../components/Navigation';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Building2, Users, Sparkles, ArrowRight, GraduationCap } from "lucide-react";
+import { Brain, Building2, Users, Sparkles, ArrowRight, GraduationCap, CheckSquare } from "lucide-react";
 import SynqAI from '../components/SynqAI';
 import CampusSynqTabs from '../components/CampusSynqTabs';
 import Mentorship from './Mentorship';
 import SimuLearn from '../components/SimuLearn';
+import { TaskManagement } from '../components/TaskManagement';
 import { FeatureDiscoveryPopup } from '@/components/FeatureDiscoveryPopup';
 
-type Portal = 'ai' | 'campus' | 'mentorship' | 'simulearn' | null;
+type Portal = 'ai' | 'campus' | 'mentorship' | 'simulearn' | 'tasks' | null;
 
 const Index = () => {
   const [activePortal, setActivePortal] = useState<Portal>(null);
@@ -59,6 +60,17 @@ const Index = () => {
       bgGradient: 'bg-gradient-to-br from-green-500/10 to-emerald-500/10',
       iconBg: 'bg-gradient-to-br from-green-500 to-emerald-500',
       features: ['Interactive Sims', 'Earn XP', 'Track Progress', 'Engaging Content']
+    },
+    {
+      id: 'tasks' as Portal,
+      icon: CheckSquare,
+      title: 'Task Management',
+      subtitle: 'Stay organized and productive',
+      description: 'Manage daily tasks with calendar, timers, and progress tracking. Earn 20 XP for each completed task!',
+      gradient: 'from-teal-500 via-cyan-500 to-blue-500',
+      bgGradient: 'bg-gradient-to-br from-teal-500/10 to-cyan-500/10',
+      iconBg: 'bg-gradient-to-br from-teal-500 to-cyan-500',
+      features: ['Daily Planner', 'Task Timer', 'Edit & Track', 'Earn Rewards']
     }
   ];
 
@@ -122,6 +134,14 @@ const Index = () => {
     return (
       <div className="min-h-screen bg-background">
         <SimuLearn onBack={() => setActivePortal(null)} />
+      </div>
+    );
+  }
+
+  if (activePortal === 'tasks') {
+    return (
+      <div className="min-h-screen bg-background">
+        <TaskManagement onClose={() => setActivePortal(null)} />
       </div>
     );
   }
