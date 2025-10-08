@@ -3,13 +3,14 @@ import Navigation from '../components/Navigation';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Building2, Users, Sparkles, ArrowRight } from "lucide-react";
+import { Brain, Building2, Users, Sparkles, ArrowRight, GraduationCap } from "lucide-react";
 import SynqAI from '../components/SynqAI';
 import CampusSynqTabs from '../components/CampusSynqTabs';
 import Mentorship from './Mentorship';
+import SimuLearn from '../components/SimuLearn';
 import { FeatureDiscoveryPopup } from '@/components/FeatureDiscoveryPopup';
 
-type Portal = 'ai' | 'campus' | 'mentorship' | null;
+type Portal = 'ai' | 'campus' | 'mentorship' | 'simulearn' | null;
 
 const Index = () => {
   const [activePortal, setActivePortal] = useState<Portal>(null);
@@ -47,6 +48,17 @@ const Index = () => {
       bgGradient: 'bg-gradient-to-br from-orange-500/10 to-pink-500/10',
       iconBg: 'bg-gradient-to-br from-orange-500 to-pink-500',
       features: ['Expert Mentors', 'Book Sessions', 'Live Chat', 'Flexible Pricing']
+    },
+    {
+      id: 'simulearn' as Portal,
+      icon: GraduationCap,
+      title: 'SimuLearn',
+      subtitle: 'Interactive learning experience',
+      description: 'Immerse yourself in interactive simulations and earn XP while you learn - 10 XP for every 2 minutes!',
+      gradient: 'from-green-500 via-emerald-500 to-teal-500',
+      bgGradient: 'bg-gradient-to-br from-green-500/10 to-emerald-500/10',
+      iconBg: 'bg-gradient-to-br from-green-500 to-emerald-500',
+      features: ['Interactive Sims', 'Earn XP', 'Track Progress', 'Engaging Content']
     }
   ];
 
@@ -106,6 +118,14 @@ const Index = () => {
     );
   }
 
+  if (activePortal === 'simulearn') {
+    return (
+      <div className="min-h-screen bg-background">
+        <SimuLearn onBack={() => setActivePortal(null)} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -150,7 +170,7 @@ const Index = () => {
           </div>
 
           {/* Portal Cards */}
-          <div id="main-features" className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mt-20">
+          <div id="main-features" className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto mt-20">
             {portals.map((portal, index) => (
               <Card 
                 key={portal.id}
